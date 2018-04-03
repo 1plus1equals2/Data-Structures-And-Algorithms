@@ -13,56 +13,46 @@ void Swap(int A[], int i, int j)
     A[j] = tmp;
 }
 
-int Partition(int A[], int left, int right)
+void SelectionSort(int A[], int len)
 {
-    int pivot = A[right];
-    int tail = left - 1;
-    for(int i = left; i < right; i++)
+    int target_index = 0;
+    for(int i = 0; i<len; i++)
     {
-        if(A[i] <= pivot)
+        target_index = i;
+        for(int j=i; j<len; j++)
         {
-            Swap(A, i, ++tail);
+            if(A[j] < A[target_index])
+            {
+                target_index = j;
+            }
         }
+        Swap(A, target_index, i);
     }
-    Swap(A, right, ++tail);
-    return tail;
 }
 
-int PartitionV2(int A[], int left, int right)
+#if 0
+int main(int argc, char **argv)
 {
-    int pivot = A[right];
-    int tail = left;
-    int i = left;
-    int j = right-1;
-    while(i <= j)
-    {
-        while(A[i] < pivot && i<=j)
-            i++;
-        while(A[j] > pivot && i<=j)
-            j--;
-        if(i<=j)
-        {
-            Swap(A, i, j);
-            i++;
-            j--;
-        }
-    }
+    int A[] = {6, 3, 5, 10, 1, 4, 2, 8, 9};
+    int len = sizeof(A)/sizeof(int);
 
-    Swap(A, i, right);
-    tail = i;
-    return tail;
+    printf("orgi arr:\n");
+    for(int i=0; i < len; i++)
+        printf("%d ", A[i]);
+    printf("\n");
+
+    SelectionSort(A, len);
+
+    printf("sort arr:\n");
+    for(int i=0; i < len; i++)
+        printf("%d ", A[i]);
+    printf("\n");
+
+    return 0;
 }
+#endif
 
-void QuickSort(int A[], int left, int right)
-{
-    if(left >= right)
-        return;
-
-    int pivot_index = PartitionV2(A, left, right);
-    QuickSort(A, left, pivot_index-1);
-    QuickSort(A, pivot_index+1, right);
-}
-
+#if 1
 int isASCENDING(ELEMET_TYPE heap[],int n)  
 {  
     int i;  
@@ -70,11 +60,6 @@ int isASCENDING(ELEMET_TYPE heap[],int n)
         if(heap[i-1]>heap[i])  
             return 0;
     return 1;
-}
-
-void QUICKSORT(ELEMET_TYPE data[],int n)
-{
-    QuickSort(data, 0, n-1);
 }
 
 void OUTPUT(ELEMET_TYPE data[], int n)
@@ -94,7 +79,7 @@ void runtest()
         printf("turn %d, test_arr_size: %d, ", test_Turn+1, test_num);
         for(int i=0;i<test_num;i++)
             test_elem[i]=rand();
-        QUICKSORT(test_elem,test_num);
+        SelectionSort(test_elem,test_num);
         if(!isASCENDING(test_elem,test_num))
         {
             printf("fail\n");
@@ -110,3 +95,4 @@ int main(int argc, char **argv)
     runtest();
     return 0;
 }
+#endif

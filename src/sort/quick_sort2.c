@@ -6,6 +6,12 @@
 #define MAXSIZE 10000
 #define ELEMET_TYPE int
 
+typedef struct
+{
+    int low;
+    int high;
+} Node;
+
 void Swap(int A[], int i, int j)
 {
     int tmp = A[i];
@@ -55,12 +61,30 @@ int PartitionV2(int A[], int left, int right)
 
 void QuickSort(int A[], int left, int right)
 {
-    if(left >= right)
-        return;
+    Node nodes[1000];
+    int top=-1,low,high;
+    top++;
+    nodes[top].low = left;
+    nodes[top].high = right;
 
-    int pivot_index = PartitionV2(A, left, right);
-    QuickSort(A, left, pivot_index-1);
-    QuickSort(A, pivot_index+1, right);
+    while(top>-1)
+    {
+        low = nodes[top].low;
+        high = nodes[top].high;
+        top--;
+
+        if(low < high)
+        {
+            int pivot_index = PartitionV2(A, low, high);
+            top++;
+            nodes[top].low = low;
+            nodes[top].high = pivot_index-1;
+
+            top++;
+            nodes[top].low = pivot_index+1;
+            nodes[top].high = high;
+        }
+    }
 }
 
 int isASCENDING(ELEMET_TYPE heap[],int n)  

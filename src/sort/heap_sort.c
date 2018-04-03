@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+
+#define MAXSIZE 10000
+#define ELEMET_TYPE int
 
 void swap(int* a, int* b) {
     int temp = *b;
@@ -8,7 +13,7 @@ void swap(int* a, int* b) {
 }
 
 void max_heapify(int arr[], int start, int end) {
-    //简历父节点指标和子节点指标
+    //建立父节点指标和子节点指标
     int dad = start;
     int son = dad * 2 + 1;
     while (son <= end) { //若子节点指标在范围内才做比较
@@ -36,6 +41,7 @@ void heap_sort(int arr[], int len) {
     }
 }
 
+#if 0
 int main() {
     int arr[] = { 3, 5, 3, 0, 8, 6, 1, 5, 8, 6, 2, 4, 9, 4, 7, 0, 1, 8, 9, 7, 3, 1, 2, 5, 9, 7, 4, 0, 2, 6 };
     int len = (int) sizeof(arr) / sizeof(*arr);
@@ -54,3 +60,51 @@ int main() {
     printf("\n");
     return 0;
 }
+#endif
+
+#if 1
+
+int isASCENDING(ELEMET_TYPE heap[],int n)  
+{  
+    int i;  
+    for(i=n-1;i>0;i--)
+        if(heap[i-1]>heap[i])  
+            return 0;
+    return 1;
+}
+
+void OUTPUT(ELEMET_TYPE data[], int n)
+{
+    for(int i=0; i<n; i++)
+        printf("%d ", data[i]);
+    printf("\n");
+}
+
+void runtest()
+{
+    ELEMET_TYPE test_elem[10000];
+    srand(time(NULL));
+    for(int test_Turn=0;test_Turn<100;test_Turn++)
+    {
+        int test_num=rand()%5000+5000;
+        printf("turn %d, test_arr_size: %d, ", test_Turn+1, test_num);
+        for(int i=0;i<test_num;i++)
+            test_elem[i]=rand();
+        heap_sort(test_elem,test_num);
+        if(!isASCENDING(test_elem,test_num))
+        {
+            printf("fail\n");
+            exit(0);
+        }
+        printf("succ\n");
+    }
+    printf("test ok\n");
+}
+
+int main(int argc, char **argv)
+{
+    runtest();
+    return 0;
+}
+
+#endif

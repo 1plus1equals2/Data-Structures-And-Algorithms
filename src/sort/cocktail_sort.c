@@ -13,55 +13,55 @@ void Swap(int A[], int i, int j)
     A[j] = tmp;
 }
 
-int Partition(int A[], int left, int right)
+void CocktailSort(int A[], int len)
 {
-    int pivot = A[right];
-    int tail = left - 1;
-    for(int i = left; i < right; i++)
+    int left = 0;
+    int right = len-1;
+    while(left < right)
     {
-        if(A[i] <= pivot)
+        for(int i=left; i<right; i++)
         {
-            Swap(A, i, ++tail);
+           if(A[i] > A[i+1])
+           {
+               Swap(A, i, i+1);
+           }
         }
-    }
-    Swap(A, right, ++tail);
-    return tail;
-}
+        right--;
 
-int PartitionV2(int A[], int left, int right)
-{
-    int pivot = A[right];
-    int tail = left;
-    int i = left;
-    int j = right-1;
-    while(i <= j)
-    {
-        while(A[i] < pivot && i<=j)
-            i++;
-        while(A[j] > pivot && i<=j)
-            j--;
-        if(i<=j)
+        for(int j=right; j > left; j--)
         {
-            Swap(A, i, j);
-            i++;
-            j--;
+            if(A[j-1] > A[j])
+            {
+                Swap(A, j-1, j);
+            }
         }
+        left++;
     }
-
-    Swap(A, i, right);
-    tail = i;
-    return tail;
 }
 
-void QuickSort(int A[], int left, int right)
+#if 0
+int main(int argc, char **argv)
 {
-    if(left >= right)
-        return;
+    int A[] = {6, 3, 5, 10, 1, 4, 2, 8, 9};
+    int len = sizeof(A)/sizeof(int);
 
-    int pivot_index = PartitionV2(A, left, right);
-    QuickSort(A, left, pivot_index-1);
-    QuickSort(A, pivot_index+1, right);
+    printf("orgi arr:\n");
+    for(int i=0; i < len; i++)
+        printf("%d ", A[i]);
+    printf("\n");
+
+    CocktailSort(A, len);
+
+    printf("sort arr:\n");
+    for(int i=0; i < len; i++)
+        printf("%d ", A[i]);
+    printf("\n");
+
+    return 0;
 }
+#endif
+
+#if 1
 
 int isASCENDING(ELEMET_TYPE heap[],int n)  
 {  
@@ -70,11 +70,6 @@ int isASCENDING(ELEMET_TYPE heap[],int n)
         if(heap[i-1]>heap[i])  
             return 0;
     return 1;
-}
-
-void QUICKSORT(ELEMET_TYPE data[],int n)
-{
-    QuickSort(data, 0, n-1);
 }
 
 void OUTPUT(ELEMET_TYPE data[], int n)
@@ -94,7 +89,7 @@ void runtest()
         printf("turn %d, test_arr_size: %d, ", test_Turn+1, test_num);
         for(int i=0;i<test_num;i++)
             test_elem[i]=rand();
-        QUICKSORT(test_elem,test_num);
+        CocktailSort(test_elem,test_num);
         if(!isASCENDING(test_elem,test_num))
         {
             printf("fail\n");
@@ -110,3 +105,5 @@ int main(int argc, char **argv)
     runtest();
     return 0;
 }
+
+#endif
